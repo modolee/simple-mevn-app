@@ -49,4 +49,32 @@ app.get('/posts', (req, res) => {
   }).sort({_id:-1})
 })
 
+// Fetch single post
+app.get('/post/:id', (req, res) => {
+  var db = req.db;
+  Post.findById(req.params.id, 'title description', function (error, post) {
+    if (error) { console.error(error); }
+    res.send(post)
+  })
+})
+
+// Update a post
+app.put('/posts/:id', (req, res) => {
+  var db = req.db;
+  Post.findById(req.params.id, 'title description', function (error, post) {
+    if (error) { console.error(error); }
+
+    post.title = req.body.title
+    post.description = req.body.description
+    post.save(function (error) {
+      if (error) {
+        console.log(error)
+      }
+      res.send({
+        success: true
+      })
+    })
+  })
+})
+
 app.listen(process.env.PORT || 8081)
