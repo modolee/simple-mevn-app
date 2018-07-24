@@ -5,7 +5,7 @@
 
     <div
       v-for="post in posts"
-      :key="post.title"
+      :key="post._id"
     >
       <p>
         <span><b>{{ post.title }}</b></span><br />
