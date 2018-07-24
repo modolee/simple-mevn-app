@@ -18,15 +18,6 @@ db.once("open", function(callback) {
 
 var Post = require("../models/post");
 
-app.get('/posts', (req, res) => {
-  res.send(
-    [{
-      title:"Hello World!",
-      description: "Hi there! How ar you?"
-    }]
-  )
-})
-
 // Add new post
 app.post('/posts', (req, res) => {
   var db = req.db;
@@ -46,6 +37,16 @@ app.post('/posts', (req, res) => {
       message: 'Post saved successfully!'
     })
   })
+})
+
+// Fetch all posts
+app.get('/posts', (req, res) => {
+  Post.find({}, 'title description', function (error, posts) {
+    if (error) { console.error(error); }
+    res.send({
+        posts: posts
+    })
+  }).sort({_id:-1})
 })
 
 app.listen(process.env.PORT || 8081)
